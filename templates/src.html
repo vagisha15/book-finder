@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Grid Example</title>
+    <link rel="stylesheet" type="text/css" href="/static/landing.css">
+    <style>
+      .image-wrapper {
+        display: inline-block;
+        margin: 10px;
+      }
+      #container {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>Looking for a book?</h1>
+      <p id="intro">We are here to help.</p>
+    </div>
+    <div id="container">
+      <div id="green-panel">
+        <label for="type-dropdown">Type:</label>
+        <select id="type-dropdown"></select>
+        <label for="genre-dropdown">Genre:</label>
+        <select id="genre-dropdown"></select>
+        <label for="author-dropdown">Author:</label>
+        <select id="author-dropdown"></select>
+      </div>
+      <div id="image-grid"></div>
+    </div>
+    <div id="inputDiv">
+      <form id="myForm">
+        <div class="input-wrapper">
+          <input type="text" name="inputString" id="inputString" placeholder="Enter a book name">
+          <input type="image" id="submit" src="/static/5466899-middle.png" alt="Submit">
+        </div>
+      </form>
+    </div>
+    <script src="/static/script.js"></script>
+  </body>
+</html>
