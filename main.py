@@ -7,28 +7,53 @@ headers = {
         'Authorization': 'Basic b3BlbnNlYXJjaC1ib29rczpCb29rc0AyMDIz',
         'Content-Type': 'application/json'
     }
-def get_results(query,field):
+def fetch_response(query,fq):
+    if (str(fq).__contains__(":")):
+        key = fq.split(":")[0]
+        payload = json.dumps({
+            "query": {
+                "bool": {
+                    "must": [{
+
+                        "match": {
+                            key: str(fq.split(":")[1]).replace("by","").strip()
+
+                        }},
+                        {
+                            "match": {
+                                "book_title_wrapper": query
+                            }
+                        }
+                    ]
+
+                }
+            }
+        })
+    else:
+        payload = json.dumps({
+            "_source": ["book_title_wrapper", "book_image_src", "Book_by_Genre", "book_type", "book_author"],
+            "query": {
+                "multi_match": {
+                    "query": query,
+                    "type": "bool_prefix",
+                    "fields": [
+                        "book_title_wrapper",
+                        "book_title_wrapper._2gram",
+                        "book_title_wrapper._3gram"
+                    ]
+                }
+            }
+        })
+
+    print(payload)
+    response = requests.request("POST", auto_suggest_url, headers=headers, data=payload).json()['hits']['hits']
+    return response
+def get_results(field,response):
     titles=[]
     links=[]
     genres=[]
     book_types=[]
     authors=[]
-    payload = json.dumps({
-        "_source": ["book_title_wrapper","book_image_src","Book_by_Genre","book_type","book_author"],
-        "query": {
-            "multi_match": {
-                "query": query,
-                "type": "bool_prefix",
-                "fields": [
-                    "book_title_wrapper",
-                    "book_title_wrapper._2gram",
-                    "book_title_wrapper._3gram"
-                ]
-            }
-        }
-    })
-    response = requests.request("POST", auto_suggest_url, headers=headers, data=payload).json()['hits']['hits']
-
     for resp in response:
         title=resp['_source']['book_title_wrapper']
         link = resp['_source']['book_image_src']
@@ -47,6 +72,7 @@ def get_results(query,field):
             authors.append(author)
 
     if (str(field).__eq__("title")):
+        print(titles)
         return titles
     elif (str(field).__eq__("link")):
         return links
@@ -54,8 +80,9 @@ def get_results(query,field):
         return genres
     elif (str(field).__eq__("type")):
         return book_types
-    else:
+    elif (str(field).__eq__("author")):
         return authors
+
 
 def get_details(link):
         payload = json.dumps({

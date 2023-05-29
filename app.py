@@ -5,24 +5,28 @@ import main
 app = Flask(__name__)
 
 # Example function to process user input and retrieve the list of image URLs
-def process_user_input(query,field):
-    # Replace this with your own logic to process the user input and fetch the image URLs
-    titles = main.get_results(query, "title")
-    links = main.get_results(query, "link")
-    authors = main.get_results(query, "author")
-    book_types = main.get_results(query, "type")
-    genres = main.get_results(query, "genre")
+def process_user_input(field,response):
+    options = []
 
-    if (str(field).__eq__("title")):
-        return titles
-    elif (str(field).__eq__("link")):
-        return links
-    elif (str(field).__eq__("genre")):
-        return genres
-    elif (str(field).__eq__("type")):
-        return book_types
+    # Replace this with your own logic to process the user input and fetch the image URLs
+    if str(field) == "title":
+        titles = main.get_results("title", response)
+        options = titles
+    elif str(field) == "link":
+        links = main.get_results("link", response)
+        options = links
+    elif str(field) == "genre":
+        genres = main.get_results("genre", response)
+        options = genres
+    elif str(field) == "type":
+        book_types = main.get_results("type", response)
+        options = book_types
     else:
-        return authors
+        authors = main.get_results("author", response)
+        options = authors
+
+    return options
+
 
 @app.route('/')
 def home():
@@ -32,12 +36,23 @@ def home():
 @app.route('/api/images', methods=['POST'])
 def get_images():
     input_data = request.get_json()
-    input_string = input_data.get('inputString')
-    image_urls = process_user_input(input_string,"link")
-    titles=process_user_input(input_string,"title")
-    authors= process_user_input(input_string,"author")
-    types=process_user_input(input_string,"book_types")
-    genres = process_user_input(input_string,"genre")
+    if 'query' in input_data:
+        input_string = input_data.get('query')
+        fq = input_data.get('filterValue')
+        response=main.fetch_response(input_string,fq)
+        image_urls = process_user_input("link",response)
+        titles = process_user_input("title",response)
+        authors = process_user_input("author",response)
+        types = process_user_input("type",response)
+        genres = process_user_input("genre",response)
+    else:
+        input_string = input_data.get('inputString')
+        response = main.fetch_response(input_string, "")
+        image_urls = process_user_input("link",response)
+        titles=process_user_input("title",response)
+        authors= process_user_input("author",response)
+        types=process_user_input("type",response)
+        genres = process_user_input("genre",response)
     return jsonify({'imageUrls': image_urls,'titles':titles,'authors':authors,'types':types,'genres':genres})
 
 @app.route('/api/metadata',methods=['POST'])

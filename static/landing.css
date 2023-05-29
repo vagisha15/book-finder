@@ -17,7 +17,8 @@ h1 {
   color: #B0D2BA;
 }
 
-h1, #intro {
+h1,
+#intro {
   font-family: "Garamond", serif;
 }
 
@@ -61,7 +62,7 @@ h1, #intro {
 #green-panel {
   width: 300px;
   height: 100vh;
-  background-color: #B0D2BA;
+  background-color: #b0d2ba;
   display: none;
   padding: 20px;
 }
@@ -72,15 +73,33 @@ h1, #intro {
 
 #green-panel label {
   display: block;
-  font-weight: bold
+  font-weight: bold;
   margin-bottom: 10px;
-
+  margin-top: 30px;
 }
 
 #green-panel select {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
+  color: grey;
+  background-color: white;
+}
+
+#green-panel select option {
+  font-size: 14px;
+  color: grey;
+}
+
+#green-panel select option::after {
+  content: "\25BC"; /* Use a custom arrow character */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #555;
+  pointer-events: none; /* Prevent click on the arrow */
 }
 
 #image-grid {
@@ -93,7 +112,7 @@ h1, #intro {
 
 .image-wrapper {
   position: relative;
-  width: 20%; /* Adjust the width as needed */
+  width: 30%; /* Adjust the width as needed */
   margin-bottom: 20px; /* Add spacing between image rows */
 }
 
@@ -127,17 +146,4 @@ h1, #intro {
 }
 
 .image-wrapper .details p {
-  margin: 5px 0;
-}
-
-.title {
-  text-align: center;
-  font-size: 16px; /* Adjust the title font size as needed */
-  font-weight: bold; /* Apply desired font weight */
-  color: #333; /* Customize title color */
-  margin-top: 10px; /* Add spacing above the title */
-}
-
-#container {
-  display: flex;
-}
+  margin: 5
