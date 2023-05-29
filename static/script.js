@@ -57,6 +57,10 @@ var submitButton = document.createElement("button");
 submitButton.textContent = "Submit";
 document.getElementById("green-panel").appendChild(submitButton);
 
+var clearButton = document.createElement("button");
+clearButton.textContent = "Clear Filters";
+document.getElementById("green-panel").appendChild(clearButton);
+
 submitButton.addEventListener("click", function(event) {
   event.preventDefault(); // Prevent form submission
   var inputString = document.getElementById("inputString").value;
@@ -86,6 +90,35 @@ submitButton.addEventListener("click", function(event) {
     console.error("Error:", error);
   });
 });
+
+clearButton.addEventListener("click", function(event) {
+  event.preventDefault(); // Prevent form submission
+  var inputString = document.getElementById("inputString").value;
+  var url = "/api/images";
+  
+  var requestData = { inputString: inputString };
+  console.log(requestData);
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(requestData)
+  })
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    // Process the response data
+    console.log(data);
+    displayImages(data.imageUrls, data.titles, data.authors, data.types, data.genres);
+
+  })
+  .catch(function(error) {
+    console.error("Error:", error);
+  });
+});
+
 
 function displayImages(imageUrls, titles, authors, types, genres) {
   var imageGrid = document.getElementById("image-grid");
