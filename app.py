@@ -36,10 +36,13 @@ def home():
 @app.route('/api/images', methods=['POST'])
 def get_images():
     input_data = request.get_json()
-    if 'query' in input_data:
-        input_string = input_data.get('query')
-        fq = input_data.get('filterValue')
-        response=main.fetch_response(input_string,fq)
+    if 'filterValue' in input_data:
+        input_string = input_data.get('inputString')
+        fqs= str(input_data.get('filterValue')).split('|')
+        auth_filter= fqs[0]
+        genre_filter=fqs[1]
+        type_filter=fqs[2]
+        response=main.fetch_response(input_string,auth_filter,genre_filter,type_filter)
         image_urls = process_user_input("link",response)
         titles = process_user_input("title",response)
         authors = process_user_input("author",response)
@@ -47,7 +50,7 @@ def get_images():
         genres = process_user_input("genre",response)
     else:
         input_string = input_data.get('inputString')
-        response = main.fetch_response(input_string, "")
+        response = main.fetch_response(input_string, "","","")
         image_urls = process_user_input("link",response)
         titles=process_user_input("title",response)
         authors= process_user_input("author",response)

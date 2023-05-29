@@ -7,16 +7,28 @@ headers = {
         'Authorization': 'Basic b3BlbnNlYXJjaC1ib29rczpCb29rc0AyMDIz',
         'Content-Type': 'application/json'
     }
-def fetch_response(query,fq):
-    if (str(fq).__contains__(":")):
-        key = fq.split(":")[0]
+def fetch_response(query,auth_filter,genre_filter,type_filter):
+    if (str(auth_filter).__contains__("-")):
+
         payload = json.dumps({
             "query": {
                 "bool": {
                     "must": [{
 
                         "match": {
-                            key: str(fq.split(":")[1]).replace("by","").strip()
+                            str(auth_filter.split("-")[0]): str(auth_filter.split("-")[1]).replace("by","")
+
+                        }},
+                        {
+
+                            "match": {
+                                str(genre_filter.split("-")[0]): str(genre_filter.split("-")[1])
+
+                        }},
+                        {
+
+                            "match": {
+                                str(type_filter.split("-")[0]): str(type_filter.split("-")[1])
 
                         }},
                         {

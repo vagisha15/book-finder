@@ -61,8 +61,10 @@ submitButton.addEventListener("click", function(event) {
   event.preventDefault(); // Prevent form submission
   var inputString = document.getElementById("inputString").value;
   var url = "/api/images";
-  //TODO - update payload
-  var requestData = { inputString: inputString };
+  var typeDropdown = document.getElementById("type-dropdown").value;
+  var genreDropdown = document.getElementById("genre-dropdown").value;
+  var authorDropdown = document.getElementById("author-dropdown").value;
+  var requestData = { inputString: inputString ,filterValue: "book_author-"+authorDropdown+"|"+"Book_by_Genre-"+genreDropdown+"|book_type-"+typeDropdown };
   console.log(requestData);
   fetch(url, {
     method: "POST",
