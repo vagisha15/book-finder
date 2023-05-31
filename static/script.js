@@ -125,75 +125,85 @@ function displayImages(imageUrls, titles, authors, types, genres) {
   imageGrid.innerHTML = ""; // Clear existing images
 
   var metadataPromises = []; // Array to store metadata fetch promises
+  if (imageUrls.length != 0){
+    for (var i = 0; i < imageUrls.length; i++) {
+      var imageWrapper = document.createElement("div");
+      imageWrapper.className = "image-wrapper";
 
-  for (var i = 0; i < imageUrls.length; i++) {
-    var imageWrapper = document.createElement("div");
-    imageWrapper.className = "image-wrapper";
+      var image = document.createElement("img");
+      image.src = imageUrls[i];
+      image.className = "image";
+      image.addEventListener("mouseenter", function() {
+        this.parentElement.querySelector(".overlay").style.opacity = "1";
+      });
+      image.addEventListener("mouseleave", function() {
+        this.parentElement.querySelector(".overlay").style.opacity = "0";
+      });
 
-    var image = document.createElement("img");
-    image.src = imageUrls[i];
-    image.className = "image";
-    image.addEventListener("mouseenter", function() {
-      this.parentElement.querySelector(".overlay").style.opacity = "1";
-    });
-    image.addEventListener("mouseleave", function() {
-      this.parentElement.querySelector(".overlay").style.opacity = "0";
-    });
+      var overlay = document.createElement("div");
+      overlay.className = "overlay";
 
-    var overlay = document.createElement("div");
-    overlay.className = "overlay";
+      var details = document.createElement("div");
+      details.className = "details";
 
-    var details = document.createElement("div");
-    details.className = "details";
+      var author = document.createElement("p");
+      author.textContent = "Author: ";
 
-    var author = document.createElement("p");
-    author.textContent = "Author: ";
+      var genre = document.createElement("p");
+      genre.textContent = "Genre: ";
 
-    var genre = document.createElement("p");
-    genre.textContent = "Genre: ";
+      details.appendChild(author);
+      details.appendChild(genre);
+      overlay.appendChild(details);
 
-    details.appendChild(author);
-    details.appendChild(genre);
-    overlay.appendChild(details);
+      var title = document.createElement("p");
+      title.textContent = titles[i];
+      title.className = "title";
 
-    var title = document.createElement("p");
-    title.textContent = titles[i];
-    title.className = "title";
+      imageWrapper.appendChild(image);
+      imageWrapper.appendChild(overlay);
+      imageWrapper.appendChild(title);
+      imageGrid.appendChild(imageWrapper);
 
-    imageWrapper.appendChild(image);
-    imageWrapper.appendChild(overlay);
-    imageWrapper.appendChild(title);
-    imageGrid.appendChild(imageWrapper);
+      // Call another API to fetch metadata
+      var metadataPromise = fetchMetadata(imageUrls[i], author, genre);
+      metadataPromises.push(metadataPromise);
+    }
 
-    // Call another API to fetch metadata
-    var metadataPromise = fetchMetadata(imageUrls[i], author, genre);
-    metadataPromises.push(metadataPromise);
+    // Wait for all metadata fetch requests to resolve
+    Promise.all(metadataPromises)
+      .then(function() {
+        // Show the image grid
+        imageGrid.style.display = "block";
+
+        var greenPanel = document.getElementById("green-panel");
+        greenPanel.style.display = "block";
+
+        // Populate type dropdown
+        var typeDropdown = document.getElementById("type-dropdown");
+        populateDropdown(typeDropdown, types);
+
+        // Populate genre dropdown
+        var genreDropdown = document.getElementById("genre-dropdown");
+        populateDropdown(genreDropdown, genres);
+
+        // Populate author dropdown
+        var authorDropdown = document.getElementById("author-dropdown");
+        populateDropdown(authorDropdown, authors);
+      })
+      .catch(function(error) {
+        console.error("Error:", error);
+      });
+    }
+    else {
+    displayError("No results to display.");
   }
+}
 
-  // Wait for all metadata fetch requests to resolve
-  Promise.all(metadataPromises)
-    .then(function() {
-      // Show the image grid
-      imageGrid.style.display = "block";
-
-      var greenPanel = document.getElementById("green-panel");
-      greenPanel.style.display = "block";
-
-      // Populate type dropdown
-      var typeDropdown = document.getElementById("type-dropdown");
-      populateDropdown(typeDropdown, types);
-
-      // Populate genre dropdown
-      var genreDropdown = document.getElementById("genre-dropdown");
-      populateDropdown(genreDropdown, genres);
-
-      // Populate author dropdown
-      var authorDropdown = document.getElementById("author-dropdown");
-      populateDropdown(authorDropdown, authors);
-    })
-    .catch(function(error) {
-      console.error("Error:", error);
-    });
+function displayError(message) {
+  var errorElement = document.getElementById("image-grid");
+  errorElement.textContent = message;
+  errorElement.style.display = "block";
 }
 
 function populateDropdown(dropdown, options) {
