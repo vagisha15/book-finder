@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
+  <style>
+    /* CSS for writers.html */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    h2{
+      text-align: center;
+      font-family: Raleway, sans-serif;
+      color: black;
+    }
+
+    h1{
+      text-align: left;
+      margin-bottom: 50px;
+      margin-top: 50px;
+      margin-left: 100px;
+      font-family: Raleway, sans-serif;
+      font-size: 50px;
+      font-weight: bold;
+      color: black;
+      opacity: 70%;
+
+    }
+
+    section {
+      padding: 50px;
+      color: white;
+    }
+
+    #section1 {
+      background-color: #919F88;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #section1 .block {
+      width: 48%;
+      height: 300px;
+      background-color: white;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    #section1 .block img {
+      height: 250px;
+      width: 250px;
+      margin-bottom: 10px;
+    }
+
+    #section1 .block .block-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #section2 {
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #section2 .box1 {
+      width: 70%;
+      background-color: black;
+      padding: 20px;
+      text-align: center;
+    }
+
+    #section2 .box2 {
+      width: 80%;
+      background-color: #404040;
+      height: 200px;
+    }
+
+    #section3 {
+      background-color: white;
+      padding: 50px;
+    }
+
+    #section3 input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    #section3 button {
+      padding: 10px 20px;
+      background-color: #919F88;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #section3 label {
+      color: black;
+    }
+
+
+
+  </style>
+</head>
+
+<body>
+  <div id="menu"></div>
+     <h1>
+       Unleash Your Imagination, <br> Craft Your Stories,<br> and Share Your Books with the World!
+     </h1>
+
+ <section id="section1" style="background-color: white; color: black; font-family: 'Raleway', sans-serif;">
+  <div class="block" style="background-color: #919F88;" onclick="scrollToSection('section2')">
+    <img src="/static/author-write-img.png" alt="Block 1 Image">
+    <div class="block-title">Want me to help you write a story?</div>
+  </div>
+  <div class="block" style="background-color: #919F88;" onclick="scrollToSection('section3')">
+    <img src="/static/book-upload-img.png" alt="Block 2 Image">
+    <div class="block-title">Upload a book you've written</div>
+  </div>
+</section>
+
+<section id="section2">
+  <div class="box1">
+    <div class="input-container">
+      <input type="text" id="input-text" placeholder="Hello! What's on your mind?" style="background-color: #363636;width:100%; color: white; border: 1px solid black; border-radius: 5px; padding: 10px;">
+    </div>
+  </div>
+  <div class="box2" id="output-box"></div>
+</section>
+
+<section id="section3">
+  <h2>Share your masterpiece here for the world to see</h2>
+  <form>
+    <label for="book-title">Book Title</label>
+    <input type="text" id="book-title" name="book-title" required>
+
+    <label for="author">Author</label>
+    <input type="text" id="author" name="author" required>
+
+    <label for="book-link">Book Link</label>
+    <input type="text" id="book-link" name="book-link" required>
+
+    <label for="price">Price</label>
+    <input type="text" id="price" name="price" required>
+
+    <label for="book-type">Book Type</label>
+    <input type="text" id="book-type" name="book-type" required>
+
+    <label for="genre">Genre</label>
+    <input type="text" id="genre" name="genre" required>
+
+    <button type="submit">Submit</button>
+  </form>
+</section>
+
+<script>
+  function generateText() {
+    const inputText = document.getElementById("input-text").value;
+    // Perform API call and retrieve the generated text
+    // Replace the code below with your API call implementation
+
+    // Example code to display the generated text
+    const generatedText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+    document.getElementById("output-box").innerText = generatedText;
+  }
+
+  function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    section.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  const inputText = document.getElementById("input-text");
+  inputText.addEventListener("keyup", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      generateText();
+    }
+  });
+</script>
+<script src="/static/menu.js"></script>
+</body>
+</html>

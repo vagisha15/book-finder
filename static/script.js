@@ -2,6 +2,7 @@ document.getElementById("myForm").addEventListener("submit", function(event) {
   event.preventDefault();
   document.getElementById("header").style.display = "none";
   document.getElementById("inputDiv").style.display = "none";
+
   var inputString = document.getElementById("inputString").value;
   var url = "/api/images";
   var requestData = { inputString: inputString };

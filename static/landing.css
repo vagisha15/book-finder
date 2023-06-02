@@ -1,8 +1,13 @@
 /* styles.css */
+@import url('https://fonts.googleapis.com/css?family=Raleway')
+body{
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+}
 
 #header {
   text-align: center;
-  padding: 130px 230px 50px;
+  padding: 100px 230px 50px;
 }
 
 h1 {
@@ -13,8 +18,8 @@ h1 {
 #intro {
   font-size: 80px;
   margin-top: 5px;
-  margin-bottom: 5px;
-  color: #B0D2BA;
+  margin-bottom: 2px;
+  color: #919F88;
 }
 
 h1,
@@ -35,13 +40,14 @@ h1,
 }
 
 #inputString {
-  margin-right: 10px;
   display: block;
-  height: 100%;
+  height: 12px;
   width: 100%;
   border: 2px solid #ccc;
-  border-radius: 10px;
   padding: 10px;
+  border-right: none;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
 #myForm {
@@ -53,6 +59,11 @@ h1,
 #submit {
   width: 32px;
   height: 32px;
+  border: 2px solid #ccc;
+  border-left: none;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+
 }
 
 #content-wrapper {
@@ -62,7 +73,7 @@ h1,
 #green-panel {
   width: 300px;
   height: 100vh;
-  background-color: #b0d2ba;
+  background-color: #919F88;
   display: none;
   padding: 20px;
 }
@@ -114,11 +125,16 @@ h1,
   position: relative;
   width: 30%; /* Adjust the width as needed */
   margin-bottom: 20px; /* Add spacing between image rows */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .image-wrapper .image {
   width: 100%;
   object-fit: cover;
+  background-color: rgba(0, 0, 0, 0.5); /* Grey overlay */
+  opacity: 1;
 }
 
 .image-wrapper .overlay {
@@ -130,10 +146,13 @@ h1,
   background-color: rgba(0, 0, 0, 0.5); /* Grey overlay */
   opacity: 0; /* Initially hidden */
   transition: opacity 0.3s ease-in-out;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .image-wrapper:hover .overlay {
-  opacity: 1; /* Show overlay on hover */
+  opacity: 1;
 }
 
 .image-wrapper .details {
@@ -143,6 +162,8 @@ h1,
   width: 100%;
   padding: 10px;
   color: #fff;
+  justify-content: center;
+  align-items: center;
 }
 
 .image-wrapper .details p {
@@ -151,6 +172,6 @@ h1,
   font-weight: bold;
 }
 
-#container{
-  background: #e0f0e3;
-}
+
+
+

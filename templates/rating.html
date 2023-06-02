@@ -1,44 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Book Rating</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
+  <style>
+    .container {
+      font-family: 'Raleway', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+      color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .container img {
+      flex: 0 0 auto;
+      width: 250px;
+      margin-right: 20px;
+    }
+
+    .container .details {
+      flex: 1 1 auto;
+    }
+
+    #rating-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #rating-container {
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+
+    #comment {
+      width: 300px;
+    }
+
+    #rating-form button {
+      margin-top: 10px;
+    }
+  </style>
 </head>
+
 <body>
-  <img src = {{ book_link }}>
-  <h1>{{ book_title }}</h1>
-  <p>Author: {{ author_name }}</p>
-  <p>Genre: {{ genre }}</p>
-  <p>Type: {{ type }}</p>
-  <p>Price: {{ price }}</p>
+  <div id="menu"></div>
+  <div class="container">
+    <img src="{{ book_link }}">
+    <div class="details">
+      <h1>{{ book_title }}</h1>
+      <p>Author: {{ author_name }}</p>
+      <p>Genre: {{ genre }}</p>
+      <p>Type: {{ type }}</p>
+      <p>Price: {{ price }}</p>
+    </div>
+  </div>
   <form id="rating-form">
     <div id="rating-container"></div>
 
     <label for="comment">Comment:</label>
     <textarea id="comment" name="comment" required></textarea>
-    
+
     <button type="submit">Submit</button>
   </form>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
   <script>
     var ratingContainer = document.getElementById("rating-container");
     $(ratingContainer).rateYo({
-      rating: 0, 
-      starWidth: "30px" 
+      rating: 0,
+      starWidth: "30px"
     });
-    
+
     var ratingForm = document.getElementById("rating-form");
     ratingForm.addEventListener("submit", function(event) {
       event.preventDefault();
-      
+
       var rating = $(ratingContainer).rateYo("rating");
-      
+
       var comment = document.getElementById("comment").value;
 
       ratingForm.innerHTML = "<h2>Thank you for your rating!</h2>";
     });
   </script>
+  <script src="/static/menu.js"></script>
+
 </body>
 </html>

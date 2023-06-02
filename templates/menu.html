@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* CSS for menu bar */
+  #menu-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  }
+
+  #menu-bar img {
+  height: 70px;
+  width: 70px;
+  margin-right: 10px;
+  }
+
+  #menu-bar .menu-buttons {
+  display: flex;
+  color: #919F88;
+  background-color: white;
+  }
+
+  #menu-bar .menu-buttons input {
+  margin-left: 10px;
+  border: none;
+  color: #919F88;
+  background-color: white;
+  }
+
+  #menu-bar .menu-buttons input:hover {
+  color: black;
+  }
+
+  </style>
+</head>
+
+<body>
+  <nav id="menu-bar">
+    <div>
+      <img src="/static/logo.png" alt="Logo">
+    </div>
+    <div class="menu-buttons">
+      <input type="button" id="reader-button" value="BOOK SEARCH">
+      <input type="button" id="writer-button" value="AUTHOR ASSISTANCE">
+      <input type="button" id="contact-button" value="CONTACT US">
+    </div>
+  </nav>
+</body>
+
+</html>

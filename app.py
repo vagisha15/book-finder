@@ -31,6 +31,14 @@ def process_user_input(field,response):
 def home():
     return render_template('src.html')
 
+@app.route('/templates/menu.html')
+def return_menu():
+    return render_template('menu.html')
+
+@app.route('/templates/writer.html')
+def return_writer_page():
+    return render_template('writer.html')
+
 @app.route('/api/book-details',methods=['POST'])
 def get_book_rating():
     image_url = request.json['imageUrl']
