@@ -139,7 +139,11 @@ function displayImages(imageUrls, titles, authors, types, genres) {
       image.addEventListener("mouseleave", function() {
         this.parentElement.querySelector(".overlay").style.opacity = "0";
       });
-
+       //adding code for rating of books
+      imageWrapper.addEventListener("click", function() {
+        var bookUrl = "../templates/rating.html"; 
+        window.open(bookUrl, "_blank");
+      });
       var overlay = document.createElement("div");
       overlay.className = "overlay";
 
@@ -190,6 +194,11 @@ function displayImages(imageUrls, titles, authors, types, genres) {
         // Populate author dropdown
         var authorDropdown = document.getElementById("author-dropdown");
         populateDropdown(authorDropdown, authors);
+
+       
+        
+
+
       })
       .catch(function(error) {
         console.error("Error:", error);

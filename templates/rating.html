@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book Rating</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+</head>
+<body>
+  <h1>Rate the Book</h1>
+  
+  <form id="rating-form">
+    <div id="rating-container"></div>
+    
+    <label for="comment">Comment:</label>
+    <textarea id="comment" name="comment" required></textarea>
+    
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    var ratingContainer = document.getElementById("rating-container");
+    $(ratingContainer).rateYo({
+      rating: 0, 
+      starWidth: "30px" 
+    });
+    
+    var ratingForm = document.getElementById("rating-form");
+    ratingForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+      
+      var rating = $(ratingContainer).rateYo("rating");
+      
+      var comment = document.getElementById("comment").value;
+
+      ratingForm.innerHTML = "<h2>Thank you for your rating!</h2>";
+    });
+  </script>
+</body>
+</html>

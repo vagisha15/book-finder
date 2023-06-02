@@ -32,6 +32,10 @@ def process_user_input(field,response):
 def home():
     return render_template('src.html')
 
+@app.route('/templates/rating.html',methods=['GET'])
+def test():
+    return "testing"
+
 # API endpoint to process user input and get the list of images
 @app.route('/api/images', methods=['POST'])
 def get_images():
