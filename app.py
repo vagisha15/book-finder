@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, send_file
 
 import main
 
@@ -34,7 +34,7 @@ def home():
 
 @app.route('/templates/rating.html',methods=['GET'])
 def test():
-    return "testing"
+    return send_file('templates/rating.html')
 
 # API endpoint to process user input and get the list of images
 @app.route('/api/images', methods=['POST'])
