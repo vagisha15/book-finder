@@ -7,7 +7,6 @@ app = Flask(__name__)
 # Example function to process user input and retrieve the list of image URLs
 def process_user_input(field,response):
     options = []
-
     # Replace this with your own logic to process the user input and fetch the image URLs
     if str(field) == "title":
         titles = main.get_results("title", response)
@@ -32,9 +31,12 @@ def process_user_input(field,response):
 def home():
     return render_template('src.html')
 
-@app.route('/templates/rating.html',methods=['GET'])
-def test():
-    return send_file('templates/rating.html')
+@app.route('/api/book-details',methods=['POST'])
+def get_book_rating():
+    image_url = request.json['imageUrl']
+    author,title,type,genre,price = main.get_metadata_for_rating(image_url)
+    return render_template('rating.html',book_title= title,author_name=author,genre=genre,
+                           type=type,price=price,book_link=image_url)
 
 # API endpoint to process user input and get the list of images
 @app.route('/api/images', methods=['POST'])

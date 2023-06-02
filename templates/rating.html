@@ -7,11 +7,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 </head>
 <body>
-  <h1>Rate the Book</h1>
-  
+  <img src = {{ book_link }}>
+  <h1>{{ book_title }}</h1>
+  <p>Author: {{ author_name }}</p>
+  <p>Genre: {{ genre }}</p>
+  <p>Type: {{ type }}</p>
+  <p>Price: {{ price }}</p>
   <form id="rating-form">
     <div id="rating-container"></div>
-    
+
     <label for="comment">Comment:</label>
     <textarea id="comment" name="comment" required></textarea>
     

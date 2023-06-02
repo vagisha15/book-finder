@@ -146,5 +146,11 @@ h1,
 }
 
 .image-wrapper .details p {
-  margin: 5
+  margin: 5;
+  align: center !important;
+  font-weight: bold;
+}
+
+#container{
+  background: #e0f0e3;
 }

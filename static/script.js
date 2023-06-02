@@ -126,7 +126,7 @@ function displayImages(imageUrls, titles, authors, types, genres) {
 
   var metadataPromises = []; // Array to store metadata fetch promises
   if (imageUrls.length != 0){
-    for (var i = 0; i < imageUrls.length; i++) {
+    for (let i = 0; i < imageUrls.length; i++) {
       var imageWrapper = document.createElement("div");
       imageWrapper.className = "image-wrapper";
 
@@ -140,10 +140,33 @@ function displayImages(imageUrls, titles, authors, types, genres) {
         this.parentElement.querySelector(".overlay").style.opacity = "0";
       });
        //adding code for rating of books
+       var imageUrls = imageUrls
       imageWrapper.addEventListener("click", function() {
-        var bookUrl = "../templates/rating.html"; 
-        window.open(bookUrl, "_blank");
-      });
+        var apiUrl = "/api/book-details";
+        var requestData = { imageUrl: imageUrls[i] }; // Use closure to capture the value of i
+        console.log(i)
+        fetch(apiUrl, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(function(response) {
+        return response.text();
+        })
+        .then(function(data) {
+            var newWindow = window.open();
+            newWindow.document.open();
+            newWindow.document.write(data);
+            newWindow.document.close();
+            })
+            .catch(function(error) {
+            console.error("Error:", error);
+            });
+        });
+
+
       var overlay = document.createElement("div");
       overlay.className = "overlay";
 
@@ -194,11 +217,6 @@ function displayImages(imageUrls, titles, authors, types, genres) {
         // Populate author dropdown
         var authorDropdown = document.getElementById("author-dropdown");
         populateDropdown(authorDropdown, authors);
-
-       
-        
-
-
       })
       .catch(function(error) {
         console.error("Error:", error);

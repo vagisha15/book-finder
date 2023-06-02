@@ -7,6 +7,39 @@ headers = {
         'Authorization': 'Basic b3BlbnNlYXJjaC1ib29rczpCb29rc0AyMDIz',
         'Content-Type': 'application/json'
     }
+
+def get_metadata_for_rating(imageUrl):
+    payload = json.dumps({
+    "query": {
+    "match": {
+      "book_link": imageUrl
+    }
+    }
+    })
+    response = requests.request("POST", auto_suggest_url, headers=headers, data=payload).json()['hits']['hits'][0]['_source']
+    print(response)
+    try:
+        author=str(response['book_author']).replace("by","")
+    except (Exception):
+        author = ""
+    try:
+        title=response['book_title_wrapper']
+    except (Exception):
+        title = ""
+    try:
+        type=response['book_type']
+    except (Exception):
+        type = ""
+    try:
+        genre=response['Book_by_Genre']
+    except (Exception):
+        genre = ""
+    try:
+        price=response['strikethrough']
+    except (Exception):
+        price = ""
+
+    return author,title,type,genre,price
 def fetch_response(query,auth_filter,genre_filter,type_filter):
     if (str(auth_filter).__contains__("-")):
 
@@ -57,7 +90,6 @@ def fetch_response(query,auth_filter,genre_filter,type_filter):
             }
         })
 
-    print(payload)
     response = requests.request("POST", auto_suggest_url, headers=headers, data=payload).json()['hits']['hits']
     return response
 def get_results(field,response):
