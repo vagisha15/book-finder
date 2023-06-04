@@ -131,14 +131,14 @@
   </div>
 </section>
 
-<section id="section2">
+<form id="section2">
   <div class="box1">
     <div class="input-container">
       <input type="text" id="input-text" placeholder="Hello! What's on your mind?" style="background-color: #363636;width:100%; color: white; border: 1px solid black; border-radius: 5px; padding: 10px;">
     </div>
   </div>
   <div class="box2" id="output-box"></div>
-</section>
+</form>
 
 <section id="section3">
   <h2>Share your masterpiece here for the world to see</h2>
@@ -167,13 +167,31 @@
 
 <script>
   function generateText() {
-    const inputText = document.getElementById("input-text").value;
-    // Perform API call and retrieve the generated text
-    // Replace the code below with your API call implementation
 
-    // Example code to display the generated text
-    const generatedText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-    document.getElementById("output-box").innerText = generatedText;
+  document.getElementById('section2').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+    var prompt = document.getElementById('input-text').value;
+
+  
+    fetch('/generateIdeas', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ prompt: prompt })
+    })
+    .then(response => response.json())
+    .then(data => {
+    
+      var ideas = data.ideas;
+      var ideasContainer = document.getElementById('output-box');
+      ideasContainer.textContent = ideas;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+});
+
   }
 
   function scrollToSection(sectionId) {

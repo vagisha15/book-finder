@@ -20,6 +20,18 @@ fetch('/templates/menu.html')
       window.location.href = '/';
     });
 
+    var loginButton = document.getElementById('login-button');
+    loginButton.addEventListener('click', function() {
+      // Open the desired page when the button is clicked
+      window.location.href = '/templates/login.html';
+    });
+
+    var signupButton = document.getElementById('signup-button');
+    signupButton.addEventListener('click', function() {
+      // Open the desired page when the button is clicked
+      window.location.href = '/templates/signup.html';
+    });
+
   })
   .catch(function(error) {
     console.error('Error:', error);
