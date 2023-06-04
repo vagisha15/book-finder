@@ -189,21 +189,22 @@ def login():
     return jsonify(response)
 
 @app.route('/generateIdeas', methods=['POST'])
-def generateIdeas(prompt: str):
+def generateIdeas():
     prompt = request.json.get('prompt')
 
     
     openai.api_key = openai_secret_key
-    response = openai.Completion.create(
-        engine='text-davinci-003',
-        prompt=prompt,
-        max_tokens=1000
+    completion = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "user", "content": "You are AI Bot who will generate story ideas for inspiration for an author based on the provided prompt in 500 words!"},
+        {"role": "user", "content": prompt}
+
+    ],
+    max_tokens = 2000
     )
-
-    # Extract the generated ideas from the response
-    ideas = response.choices[0].text.strip()
-
-    return jsonify({'ideas': ideas})
+    result = completion.choices[0].message
+    return jsonify({'ideas': result["content"]})
 
 
 
