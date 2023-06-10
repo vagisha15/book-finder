@@ -46,10 +46,6 @@ def return_menu():
 def return_writer_page():
     return render_template('writer.html')
 
-@app.route('/templates/about.html')
-def return_about_page():
-    return render_template('about.html')
-
 @app.route('/api/submit-book-details',methods=['POST'])
 def submit_book_details():
     title = request.json['title']
@@ -58,14 +54,27 @@ def submit_book_details():
     price = request.json["price"]
     book_type = request.json["bookType"]
     genre = request.json["genre"]
-    return {"response_message":"SUCCESS"}
+    response=main.submit_book_details(title,author,book_link,price,book_type,genre)
+    return {"response_message":response}
+
+@app.route('/templates/login.html')
+def return_login_page():
+    return render_template('login.html')
+
+@app.route('/templates/signup.html')
+def return_signup_page():
+    return render_template('signup.html')
+
+@app.route('/templates/about.html')
+def return_about_page():
+    return render_template('about.html')
 
 @app.route('/api/book-details',methods=['POST'])
 def get_book_rating():
     image_url = request.json['imageUrl']
     author,title,type,genre,price = main.get_metadata_for_rating(image_url)
     return render_template('rating.html',book_title= title,author_name=author,genre=genre,
-                           type=type,price=price,book_link=image_url)
+                           type=type,price=price,book_link=image_url,user_name=username)
 
 # API endpoint to process user input and get the list of images
 @app.route('/api/images', methods=['POST'])
@@ -101,5 +110,157 @@ def get_metadata():
     return {"bookLink": metadata["book_link"],"author": metadata["book_author"],
             "genre": metadata["Book_by_Genre"]}
 
+def create_connection():
+    conn = None
+    try:
+        conn = sqlite3.connect('data/users.db')
+        return conn
+    except sqlite3.Error as e:
+        print(e)
+
+# Function to create the users table if it doesn't exist
+def create_table(conn):
+    try:
+        cursor = conn.cursor()
+        cursor.execute('''CREATE TABLE IF NOT EXISTS users
+                          (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                           username TEXT NOT NULL,
+                           password TEXT NOT NULL,
+                           email TEXT NOT NULL,
+                           fname TEXT NOT NULL,
+                           lname TEXT);''')
+
+
+        cursor.execute('''CREATE TABLE IF NOT EXISTS user_rating
+                                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                   username TEXT NOT NULL,
+                                   rating FLOAT NOT NULL,
+                                   comment TEXT NOT NULL);''')
+        conn.commit()
+    except sqlite3.Error as e:
+        print(e)
+
+# Function to insert a new user into the database
+def insert_user(conn, username, password):
+    try:
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)",
+                       (username, password))
+        conn.commit()
+        print("User inserted successfully.")
+    except sqlite3.Error as e:
+        print(e)
+
+# Function to retrieve a user by username from the database
+def get_user(conn, username):
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username=?", (username,))
+        user = cursor.fetchone()
+        return user
+    except sqlite3.Error as e:
+        print(e)
+
+# Function to check if a given username exists in the database
+def is_username_taken(conn, username):
+    user = get_user(conn, username)
+    if user:
+        return True
+    else:
+        return False
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    conn = create_connection()
+
+    if conn is not None:
+        if is_username_taken(conn, username):
+            response = {"success": False, "message": "Username already taken."}
+        else:
+            insert_user(conn, username, password)
+            response = {"success": True, "message": "User registered successfully."}
+    else:
+        response = {"success": False, "message": "Error: Could not establish a database connection."}
+
+    return jsonify(response)
+
+@app.route('/get_username')
+def get_username():
+    return jsonify(username=username)
+
+@app.route('/submit_user_feedback', methods=['POST'])
+def submit_user_feedbacks():
+    print(request)
+    req=request.get_json()
+    print(req)
+    comment = req.get("comment")
+    rating = req.get("rating")
+
+    conn = create_connection()
+
+    if conn is not None:
+        try:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO user_rating (username, rating,comment) VALUES (?, ? , ?)",
+                           (username, rating, comment))
+            conn.commit()
+            print("User Feedback submitted successfully.")
+            response = {"success": True, "message": "Thanks for your feedback!"}
+
+        except sqlite3.Error as e:
+            print(e)
+            response = {"success": False, "message": "Error: Could not establish a database connection."}
+    else:
+        response = {"success": False, "message": "Error: Could not establish a database connection."}
+
+    return jsonify(response)
+@app.route('/login', methods=['POST'])
+def login():
+    # Retrieve user data from the request
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    # Create a connection to the database
+    conn = create_connection()
+
+    if conn is not None:
+        # Get the user from the database
+        user = get_user(conn, username, password)
+        if user:
+            response = {"success": True, "message": "Login successful."}
+        else:
+            response = {"success": False, "message": "Invalid username or password."}
+    else:
+        response = {"success": False, "message": "Error: Could not establish a database connection."}
+
+    # Return the response as JSON
+    return jsonify(response)
+
+@app.route('/generateIdeas', methods=['POST'])
+def generateIdeas():
+    prompt = request.json.get('prompt')
+
+
+    openai.api_key = openai_secret_key
+    completion = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "user", "content": "You are AI Bot who will generate story ideas for inspiration for an author based on the provided prompt in 500 words!"},
+        {"role": "user", "content": prompt}
+
+    ],
+    max_tokens = 2000
+    )
+    result = completion.choices[0].message
+    return jsonify({'ideas': result["content"]})
+
+
+
+
 if __name__ == '__main__':
+    with create_connection() as conn:
+        create_table(conn)
     app.run()
