@@ -1,12 +1,50 @@
 import streamlit as st
 import requests
 import json
+import openai
 
 auto_suggest_url = "https://search-books-main-5xruavjoyo7mq2fem4jwni4ace.ap-south-1.es.amazonaws.com/books_main/_search"
+add_data_url = "https://search-books-main-5xruavjoyo7mq2fem4jwni4ace.ap-south-1.es.amazonaws.com/books_main/_doc"
 headers = {
         'Authorization': 'Basic b3BlbnNlYXJjaC1ib29rczpCb29rc0AyMDIz',
         'Content-Type': 'application/json'
     }
+def submit_book_details(title,author,book_link,price,book_type,genre):
+
+    payload = json.dumps({
+        "book_title_wrapper": title,
+        "book_link": book_link,
+        "book_author": author,
+        "strikethrough": price,
+        "book_type": book_type,
+        "Book_by_Genre": genre
+    })
+
+    response = requests.request("POST", add_data_url, headers=headers, data=payload)
+    if(response.status_code.__eq__(201)):
+        return "SUCCESS"
+    else:
+        return "FAILED"
+
+def generate_story(input_string):
+
+    # Set up your OpenAI API key
+    openai.api_key = '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'
+
+    prompt = f"Once upon a time, there was {input_string}. The story unfolds as follows:"
+    response = openai.Completion.create(
+            engine='text-davinci-003',
+            prompt=prompt,
+            max_tokens=200,
+            n=1,
+            stop=None,
+            temperature=0.7
+        )
+
+    generated_text = response.choices[0].text.strip()
+
+    return generated_text
+
 
 def get_metadata_for_rating(imageUrl):
     payload = json.dumps({
@@ -174,8 +212,9 @@ def show_results(links, titles):
 
 
 
-# if __name__=="__main__":
-#     # read_one_csv()
+if __name__=="__main__":
+    # generate_story("thriller story based on crypto")
+    submit_book_details("v","v","v","v","v","v")
 #     # index_to_opensearch()
 #     get_suggestions("stat")
 
