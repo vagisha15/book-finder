@@ -30,5 +30,5 @@ function login() {
 var submitButton = document.getElementById('submit');
         submitButton.addEventListener('click', function() {
           // Open the desired page when the button is clicked
-          window.location.href = '/templates/src.html';
+          window.location.href = '/';
         });

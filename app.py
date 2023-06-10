@@ -136,16 +136,17 @@ def create_table(conn):
                                    username TEXT NOT NULL,
                                    rating FLOAT NOT NULL,
                                    comment TEXT NOT NULL);''')
+        p = cursor.execute("select * from users").fetchall()
+        print(p)
         conn.commit()
     except sqlite3.Error as e:
         print(e)
 
 # Function to insert a new user into the database
-def insert_user(conn, username, password):
+def insert_user(conn, username, password,email,fname,lname):
     try:
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)",
-                       (username, password))
+        cursor.execute("INSERT INTO users (username, password,email,fname,lname) VALUES (?,?,?,?,?)",(username, password,email,fname,lname))
         conn.commit()
         print("User inserted successfully.")
     except sqlite3.Error as e:
@@ -161,6 +162,16 @@ def get_user(conn, username):
     except sqlite3.Error as e:
         print(e)
 
+# Function to check if password and username matches
+def verify_user(conn, username,password):
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username=? and password=?", (username,password,))
+        user = cursor.fetchone()
+        return user
+    except sqlite3.Error as e:
+        print(e)
+
 # Function to check if a given username exists in the database
 def is_username_taken(conn, username):
     user = get_user(conn, username)
@@ -171,20 +182,24 @@ def is_username_taken(conn, username):
 
 @app.route('/signup', methods=['POST'])
 def signup():
-    username = request.form.get("username")
-    password = request.form.get("password")
-
+    username = request.json.get("username")
+    password = request.json.get("password")
+    email = request.json.get("email")
+    fname = request.json.get("fname")
+    lname = request.json.get("lname")
+    print(username)
+    print(password)
+    print(fname,lname,email)
     conn = create_connection()
-
     if conn is not None:
         if is_username_taken(conn, username):
             response = {"success": False, "message": "Username already taken."}
         else:
-            insert_user(conn, username, password)
+            insert_user(conn, username, password,email,fname,lname)
             response = {"success": True, "message": "User registered successfully."}
     else:
         response = {"success": False, "message": "Error: Could not establish a database connection."}
-
+    conn.close()
     return jsonify(response)
 
 @app.route('/get_username')
@@ -198,8 +213,6 @@ def submit_user_feedbacks():
     print(req)
     comment = req.get("comment")
     rating = req.get("rating")
-
-    conn = create_connection()
 
     if conn is not None:
         try:
@@ -224,11 +237,10 @@ def login():
     password = request.form.get("password")
 
     # Create a connection to the database
-    conn = create_connection()
 
     if conn is not None:
         # Get the user from the database
-        user = get_user(conn, username, password)
+        user = get_user(conn, username)
         if user:
             response = {"success": True, "message": "Login successful."}
         else:
