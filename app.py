@@ -9,8 +9,7 @@ app = Flask(__name__)
 
 #setting up variables
 openai_secret_key = os.environ.get("OPENAI_SECRET_KEY")
-
-
+username=""
 
 # Example function to process user input and retrieve the list of image URLs
 def process_user_input(field,response):
@@ -47,13 +46,19 @@ def return_menu():
 def return_writer_page():
     return render_template('writer.html')
 
-@app.route('/templates/login.html')
-def return_login_page():
-    return render_template('login.html')
+@app.route('/templates/about.html')
+def return_about_page():
+    return render_template('about.html')
 
-@app.route('/templates/signup.html')
-def return_signup_page():
-    return render_template('signup.html')
+@app.route('/api/submit-book-details',methods=['POST'])
+def submit_book_details():
+    title = request.json['title']
+    author = request.json["author"]
+    book_link = request.json["bookLink"]
+    price = request.json["price"]
+    book_type = request.json["bookType"]
+    genre = request.json["genre"]
+    return {"response_message":"SUCCESS"}
 
 @app.route('/api/book-details',methods=['POST'])
 def get_book_rating():
@@ -96,120 +101,5 @@ def get_metadata():
     return {"bookLink": metadata["book_link"],"author": metadata["book_author"],
             "genre": metadata["Book_by_Genre"]}
 
-def create_connection():
-    conn = None
-    try:
-        conn = sqlite3.connect('data/users.db')
-        return conn
-    except sqlite3.Error as e:
-        print(e)
-
-# Function to create the users table if it doesn't exist
-def create_table(conn):
-    try:
-        cursor = conn.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS users
-                          (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                           username TEXT NOT NULL,
-                           password TEXT NOT NULL,
-                           email TEXT NOT NULL,
-                           fname TEXT NOT NULL,
-                           lname TEXT);''')
-        conn.commit()
-    except sqlite3.Error as e:
-        print(e)
-
-# Function to insert a new user into the database
-def insert_user(conn, username, password):
-    try:
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)",
-                       (username, password))
-        conn.commit()
-        print("User inserted successfully.")
-    except sqlite3.Error as e:
-        print(e)
-
-# Function to retrieve a user by username from the database
-def get_user(conn, username):
-    try:
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=?", (username,))
-        user = cursor.fetchone()
-        return user
-    except sqlite3.Error as e:
-        print(e)
-
-# Function to check if a given username exists in the database
-def is_username_taken(conn, username):
-    user = get_user(conn, username)
-    if user:
-        return True
-    else:
-        return False
-
-@app.route('/signup', methods=['POST'])
-def signup():
-    username = request.form.get("username")
-    password = request.form.get("password")
-
-    conn = create_connection()
-
-    if conn is not None:
-        if is_username_taken(conn, username):
-            response = {"success": False, "message": "Username already taken."}
-        else:
-            insert_user(conn, username, password)
-            response = {"success": True, "message": "User registered successfully."}
-    else:
-        response = {"success": False, "message": "Error: Could not establish a database connection."}
-
-    return jsonify(response)
-
-@app.route('/login', methods=['POST'])
-def login():
-    # Retrieve user data from the request
-    username = request.form.get("username")
-    password = request.form.get("password")
-
-    # Create a connection to the database
-    conn = create_connection()
-
-    if conn is not None:
-        # Get the user from the database
-        user = get_user(conn, username, password)
-        if user:
-            response = {"success": True, "message": "Login successful."}
-        else:
-            response = {"success": False, "message": "Invalid username or password."}
-    else:
-        response = {"success": False, "message": "Error: Could not establish a database connection."}
-
-    # Return the response as JSON
-    return jsonify(response)
-
-@app.route('/generateIdeas', methods=['POST'])
-def generateIdeas():
-    prompt = request.json.get('prompt')
-
-    
-    openai.api_key = openai_secret_key
-    completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "user", "content": "You are AI Bot who will generate story ideas for inspiration for an author based on the provided prompt in 500 words!"},
-        {"role": "user", "content": prompt}
-
-    ],
-    max_tokens = 2000
-    )
-    result = completion.choices[0].message
-    return jsonify({'ideas': result["content"]})
-
-
-
-
 if __name__ == '__main__':
-    with create_connection() as conn:
-        create_table(conn)
     app.run()
