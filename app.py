@@ -240,7 +240,7 @@ def login():
 
     if conn is not None:
         # Get the user from the database
-        user = get_user(conn, username)
+        user = verify_user(conn, username,password)
         if user:
             response = {"success": True, "message": "Login successful."}
         else:
