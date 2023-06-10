@@ -26,3 +26,9 @@ function login() {
   // Send the AJAX request
   xhr.send(data);
 }
+
+var submitButton = document.getElementById('submit');
+        submitButton.addEventListener('click', function() {
+          // Open the desired page when the button is clicked
+          window.location.href = '/templates/src.html';
+        });
