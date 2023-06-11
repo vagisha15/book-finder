@@ -24,14 +24,9 @@ document.getElementById("myForm").addEventListener("submit", function(event) {
       .then(function(response) {
         return response.json();
       })
-      .then(function(data) {
-        var username = data.username;
-
-        // Add event listener to the 'Writer' button
-        var submitEl = document.getElementById('submit');
+      .then(function(data2) {
+        var username = data2.username;
         console.log(username)
-        submitEl.addEventListener('click', function() {
-          // Check if the username is not empty
           if (username !== "") {
             // Open the desired page when the button is clicked
             displayImages(data.imageUrls, data.titles, data.authors, data.types, data.genres);
@@ -39,8 +34,8 @@ document.getElementById("myForm").addEventListener("submit", function(event) {
             // Display a message asking the user to login first
             alert('Please login first');
           }
+          })
 
-  });
   })
   .catch(function(error) {
     console.error("Error:", error);
@@ -76,10 +71,16 @@ document.getElementById("green-panel").addEventListener("submit", function(event
 // Create the submit button for the green-panel
 var submitButton = document.createElement("button");
 submitButton.textContent = "Submit";
+submitButton.style.padding = "10px";
+submitButton.style.margin = "35px";
+
+
 document.getElementById("green-panel").appendChild(submitButton);
 
 var clearButton = document.createElement("button");
 clearButton.textContent = "Clear Filters";
+clearButton.style.padding = "10px";
+clearButton.style.margin = "25px";
 document.getElementById("green-panel").appendChild(clearButton);
 
 submitButton.addEventListener("click", function(event) {
