@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
   <style>
     /* CSS for writers.html */
     body {
@@ -13,13 +14,13 @@
       padding: 0;
     }
 
-    h2{
+    h2 {
       text-align: center;
       font-family: Raleway, sans-serif;
       color: black;
     }
 
-    h1{
+    h1 {
       text-align: left;
       margin-bottom: 50px;
       margin-top: 50px;
@@ -88,48 +89,6 @@
       position: relative;
     }
 
-
-#loading-container {
-  display: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-}
-
-.show-loader #loading-container {
-  display: block; /* Show the loading container when the show-loader class is added */
-}
-
-#loading-text {
-  text-align: center;
-  font-family: Raleway, sans-serif;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-#loading-container .loader {
-  display: none;
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #919F88;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-  margin-left: 100px;
-}
-
-.show-loader .loader {
-  display: block;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
     #section3 {
       background-color: white;
       padding: 50px;
@@ -153,192 +112,218 @@
       color: black;
     }
 
+    /* Loader */
+    #loading-container {
+      display:none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+    }
 
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #919F88;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin-left: 100px;
+    }
 
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 
 <body>
   <div id="menu"></div>
-     <h1>
-       Unleash Your Imagination, <br> Craft Your Stories,<br> and Share Your Books with the World!
-     </h1>
+  <h1>
+    Unleash Your Imagination, <br> Craft Your Stories,<br> and Share Your Books with the World!
+  </h1>
 
- <section id="section1" style="background-color: white; color: black; font-family: 'Raleway', sans-serif;">
-  <div class="block" style="background-color: #919F88;" onclick="scrollToSection('section2')">
-    <img src="/static/author-write-img.png" alt="Block 1 Image">
-    <div class="block-title">Want me to help you write a story?</div>
-  </div>
-  <div class="block" style="background-color: #919F88;" onclick="scrollToSection('section3')">
-    <img src="/static/book-upload-img.png" alt="Block 2 Image">
-    <div class="block-title">Upload a book you've written</div>
-  </div>
-</section>
-
-<section id="section2">
-  <div class="box1">
-    <div class="input-container">
-      <input type="text" id="input-text" placeholder="Hello! What's on your mind?" style="background-color: #363636;width:100%; color: white; border: 1px solid black; border-radius: 5px; padding: 10px;">
+  <section id="section1" style="background-color: white; color: black; font-family: 'Raleway', sans-serif;">
+    <div class="block" style="background-color: #919F88;" onclick="scrollToSection('section2')">
+      <img src="/static/author-write-img.png" alt="Block 1 Image">
+      <div class="block-title">Want me to help you write a story?</div>
     </div>
-  </div>
-  <div class="box2" id="output-box">
-    <div id="loading-container">
-      <p id="loading-text">Hang tight, this may take a moment</p>
-      <div class="loader" id="loader"></div>
+    <div class="block" style="background-color: #919F88;" onclick="scrollToSection('section3')">
+      <img src="/static/book-upload-img.png" alt="Block 2 Image">
+      <div class="block-title">Upload a book you've written</div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <section id="section2">
+    <div class="box1">
+      <div class="input-container">
+        <input type="text" id="input-text" placeholder="Hello! What's on your mind?"
+          style="background-color: #363636;width:100%; color: white; border: 1px solid black; border-radius: 5px; padding: 10px;">
+      </div>
+    </div>
+    <div class="box2" id="output-box">
+      <div id="loading-container">
+        <div class="loader"></div>
+      </div>
+    </div>
+  </section>
 
-<section id="section3">
-  <h2>Share your masterpiece here for the world to see</h2>
-  <form>
-    <label for="book-title">Book Title</label>
-    <input type="text" id="book-title" name="book-title" required>
+  <section id="section3">
+    <h2>Share your masterpiece here for the world to see</h2>
+    <form>
+      <label for="book-title">Book Title</label>
+      <input type="text" id="book-title" name="book-title" required>
 
-    <label for="author">Author</label>
-    <input type="text" id="author" name="author" required>
+      <label for="author">Author</label>
+      <input type="text" id="author" name="author" required>
 
-    <label for="book-link">Book Link</label>
-    <input type="text" id="book-link" name="book-link" required>
+      <label for="book-link">Book Link</label>
+      <input type="text" id="book-link" name="book-link" required>
 
-    <label for="price">Price</label>
-    <input type="text" id="price" name="price" required>
+      <label for="price">Price</label>
+      <input type="text" id="price" name="price" required>
 
-    <label for="book-type">Book Type</label>
-    <input type="text" id="book-type" name="book-type" required>
+      <label for="book-type">Book Type</label>
+      <input type="text" id="book-type" name="book-type" required>
 
-    <label for="genre">Genre</label>
-    <input type="text" id="genre" name="genre" required>
+      <label for="genre">Genre</label>
+      <input type="text" id="genre" name="genre" required>
 
-    <button type="submit" id="submit">Submit</button>
-  </form>
-</section>
+      <button type="submit" id="submit">Submit</button>
+    </form>
+  </section>
 
-<script>
-  var submitButton = document.getElementById("submit");
-  submitButton.addEventListener("click", function(event) {
-  event.preventDefault(); // Prevent form submission
-  var title = document.getElementById("book-title").value;
-  var author = document.getElementById("author").value;
-  var book_link = document.getElementById("book-link").value;
-  var price = document.getElementById("price").value;
-  var book_type = document.getElementById("book-type").value;
-  var genre = document.getElementById("genre").value;
-  var url = "/api/submit-book-details";
-  var requestData = { title: title ,author: author, bookLink: book_link, price:price,
-                      bookType: book_type, genre:genre, url: url};
-  console.log(requestData);
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(requestData)
-  })
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(data) {
-    console.log(data);
-       if (data.response_message == "SUCCESS") {
-       var successMessage = document.createElement("div");
-       successMessage.textContent = "Your details have been submitted successfully";
-       successMessage.style.textAlign = "center";
-       successMessage.style.color = "darkgreen";
-       successMessage.style.fontSize = "15px";
-       successMessage.style.border = "1px solid darkgreen";
-       successMessage.style.padding = "10px";
-       successMessage.style.position = "fixed";
-       successMessage.style.top = "20px";
-       successMessage.style.right = "20px";
-       successMessage.style.borderRadius = "5px";
-       successMessage.style.background = "white";
+  <script>
+    var submitButton = document.getElementById("submit");
+    submitButton.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent form submission
+      var title = document.getElementById("book-title").value;
+      var author = document.getElementById("author").value;
+      var book_link = document.getElementById("book-link").value;
+      var price = document.getElementById("price").value;
+      var book_type = document.getElementById("book-type").value;
+      var genre = document.getElementById("genre").value;
+      var url = "/api/submit-book-details";
+      var requestData = {
+        title: title,
+        author: author,
+        bookLink: book_link,
+        price: price,
+        bookType: book_type,
+        genre: genre,
+        url: url
+      };
+      console.log(requestData);
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log(data);
+          if (data.response_message == "SUCCESS") {
+            var successMessage = document.createElement("div");
+            successMessage.textContent = "Your details have been submitted successfully";
+            successMessage.style.textAlign = "center";
+            successMessage.style.color = "darkgreen";
+            successMessage.style.fontSize = "15px";
+            successMessage.style.border = "1px solid darkgreen";
+            successMessage.style.padding = "10px";
+            successMessage.style.position = "fixed";
+            successMessage.style.top = "20px";
+            successMessage.style.right = "20px";
+            successMessage.style.borderRadius = "5px";
+            successMessage.style.background = "white";
 
+            var parentContainer = submitButton.parentNode;
+            parentContainer.appendChild(successMessage);
+            setTimeout(function () {
+              successMessage.style.display = "none";
+            }, 3000);
+          } else {
+            var errorMessage = document.createElement("div");
+            errorMessage.textContent = "Error occurred, please try again or contact us";
+            errorMessage.style.textAlign = "center";
+            errorMessage.style.color = "#8b0000";
+            errorMessage.style.fontSize = "15px";
+            errorMessage.style.border = "1px solid #8b0000";
+            errorMessage.style.padding = "10px";
+            errorMessage.style.position = "fixed";
+            errorMessage.style.top = "20px";
+            errorMessage.style.right = "20px";
+            errorMessage.style.borderRadius = "5px";
+            errorMessage.style.background = "#f08080";
 
-       var parentContainer = submitButton.parentNode;
-       parentContainer.appendChild(successMessage);
-       setTimeout(function() {
-           successMessage.style.display = "none";
-       }, 3000);
+            var parentContainer = submitButton.parentNode;
+            parentContainer.appendChild(errorMessage);
+            setTimeout(function () {
+              errorMessage.style.display = "none";
+            }, 3000);
+          }
+        })
+        .catch(function (error) {
+          console.error("Error:", error);
+        });
+    });
+
+    function generateText() {
+      var prompt = document.getElementById('input-text').value;
+
+      // Show the loader
+      var loaderContainer = document.getElementById('loading-container');
+      loaderContainer.style.display = "block";
+
+      fetch('/generateIdeas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prompt: prompt })
+      })
+        .then(response => response.json())
+        .then(data => {
+          var ideas = data.ideas;
+          var ideasContainer = document.getElementById('output-box');
+          ideasContainer.textContent = ideas;
+
+          // Hide the loader
+          loaderContainer.style.display = "none";
+        })
+        .catch(error => {
+          console.error('Error:', error);
+
+          // Hide the loader (in case of error)
+          loaderContainer.style.display = "none";
+        });
     }
-    else {
-       var errorMessage = document.createElement("div");
-       errorMessage.textContent = "Error occurred, please try again or contact us";
-       errorMessage.style.textAlign = "center";
-       errorMessage.style.color = "#8b0000";
-       errorMessage.style.fontSize = "15px";
-       errorMessage.style.border = "1px solid #8b0000";
-       errorMessage.style.padding = "10px";
-       errorMessage.style.position = "fixed";
-       errorMessage.style.top = "20px";
-       errorMessage.style.right = "20px";
-       errorMessage.style.borderRadius = "5px";
-       errorMessage.style.background = "#f08080";
 
-       var parentContainer = submitButton.parentNode;
-       parentContainer.appendChild(errorMessage);
-       setTimeout(function() {
-           errorMessage.style.display = "none";
-       }, 3000);
+    function scrollToSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      section.scrollIntoView({ behavior: 'smooth' });
     }
 
-
-  })
-  .catch(function(error) {
-    console.error("Error:", error);
-  });
-});
-
-  function generateText() {
-  var prompt = document.getElementById('input-text').value;
-
-  // Show the loader
-  var loaderContainer = document.getElementById('loading-container');
-  var loader = document.getElementById('loader');
-  loaderContainer.classList.add('show-loader');
-  loader.classList.add('show-loader');
-
-  fetch('/generateIdeas', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ prompt: prompt })
-  })
-  .then(response => response.json())
-  .then(data => {
-    var ideas = data.ideas;
-    var ideasContainer = document.getElementById('output-box');
-    ideasContainer.textContent = ideas;
-
-    // Hide the loader
-    loaderContainer.classList.remove('show-loader');
-    loader.classList.remove('show-loader');
-  })
-  .catch(error => {
-    console.error('Error:', error);
-
-    // Hide the loader (in case of error)
-    loaderContainer.classList.remove('show-loader');
-    loader.classList.remove('show-loader');
-  });
-}
-
-
-  function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    section.scrollIntoView({ behavior: 'smooth' });
-  }
-
-  const inputText = document.getElementById("input-text");
-  inputText.addEventListener("keyup", function(event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      generateText();
-    }
-  });
-</script>
-<script src="/static/menu.js"></script>
+    const inputText = document.getElementById("input-text");
+    inputText.addEventListener("keyup", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        generateText();
+      }
+    });
+  </script>
+  <script src="/static/menu.js"></script>
 </body>
+
 </html>
