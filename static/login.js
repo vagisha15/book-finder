@@ -13,7 +13,7 @@ function login() {
       // Handle the server response
       var response = JSON.parse(xhr.responseText);
       if (response.success) {
-        window.location.href = "src.html";
+        window.location.href = "/";
       } else {
         alert("Error: " + response.message);
       }
@@ -27,8 +27,8 @@ function login() {
   xhr.send(data);
 }
 
-var submitButton = document.getElementById('submit');
-        submitButton.addEventListener('click', function() {
-          // Open the desired page when the button is clicked
-          window.location.href = '/';
-        });
+//var submitButton = document.getElementById('submit');
+//        submitButton.addEventListener('click', function() {
+//          // Open the desired page when the button is clicked
+//          window.location.href = '/';
+//        });

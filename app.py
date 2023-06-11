@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, send_file
+from flask import Flask, jsonify, request, render_template, send_file, session
 import sqlite3
 import main
 import os
@@ -6,10 +6,10 @@ from dotenv import load_dotenv
 import openai
 load_dotenv()
 app = Flask(__name__)
+app.secret_key="test"
 
 #setting up variables
 openai_secret_key = os.environ.get("OPENAI_SECRET_KEY")
-username=""
 
 # Example function to process user input and retrieve the list of image URLs
 def process_user_input(field,response):
@@ -74,7 +74,7 @@ def get_book_rating():
     image_url = request.json['imageUrl']
     author,title,type,genre,price = main.get_metadata_for_rating(image_url)
     return render_template('rating.html',book_title= title,author_name=author,genre=genre,
-                           type=type,price=price,book_link=image_url,user_name=username)
+                           type=type,price=price,book_link=image_url,user_name=session["logged_in_user"])
 
 # API endpoint to process user input and get the list of images
 @app.route('/api/images', methods=['POST'])
@@ -113,7 +113,7 @@ def get_metadata():
 def create_connection():
     conn = None
     try:
-        conn = sqlite3.connect('data/users.db')
+        conn = sqlite3.connect('data/users.db', check_same_thread=False)
         return conn
     except sqlite3.Error as e:
         print(e)
@@ -204,7 +204,11 @@ def signup():
 
 @app.route('/get_username')
 def get_username():
-    return jsonify(username=username)
+    try:
+        print(session["logged_in_user"])
+    except:
+        session["logged_in_user"]=""
+    return jsonify(username=session["logged_in_user"])
 
 @app.route('/submit_user_feedback', methods=['POST'])
 def submit_user_feedbacks():
@@ -218,7 +222,7 @@ def submit_user_feedbacks():
         try:
             cursor = conn.cursor()
             cursor.execute("INSERT INTO user_rating (username, rating,comment) VALUES (?, ? , ?)",
-                           (username, rating, comment))
+                           (session["logged_in_user"], rating, comment))
             conn.commit()
             print("User Feedback submitted successfully.")
             response = {"success": True, "message": "Thanks for your feedback!"}
@@ -243,6 +247,8 @@ def login():
         user = verify_user(conn, username,password)
         if user:
             response = {"success": True, "message": "Login successful."}
+            session["logged_in_user"] = username
+            print("uhunnn saddddd :(" +  session["logged_in_user"])
         else:
             response = {"success": False, "message": "Invalid username or password."}
     else:

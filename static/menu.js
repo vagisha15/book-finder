@@ -17,6 +17,7 @@ fetch('/templates/menu.html')
 
         // Add event listener to the 'Writer' button
         var writerButton = document.getElementById('writer-button');
+        console.log(username)
         writerButton.addEventListener('click', function() {
           // Check if the username is not empty
           if (username !== "") {
@@ -27,8 +28,6 @@ fetch('/templates/menu.html')
             alert('Please login first');
           }
         });
-
-        // Rest of the code...
 
         var homeButton = document.getElementById('reader-button');
         homeButton.addEventListener('click', function() {

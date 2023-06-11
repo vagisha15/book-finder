@@ -20,7 +20,27 @@ document.getElementById("myForm").addEventListener("submit", function(event) {
   .then(function(data) {
     // Process the response data
     console.log(data);
-    displayImages(data.imageUrls, data.titles, data.authors, data.types, data.genres);
+    fetch('/get_username')
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        var username = data.username;
+
+        // Add event listener to the 'Writer' button
+        var submitEl = document.getElementById('submit');
+        console.log(username)
+        submitEl.addEventListener('click', function() {
+          // Check if the username is not empty
+          if (username !== "") {
+            // Open the desired page when the button is clicked
+            displayImages(data.imageUrls, data.titles, data.authors, data.types, data.genres);
+          } else {
+            // Display a message asking the user to login first
+            alert('Please login first');
+          }
+
+  });
   })
   .catch(function(error) {
     console.error("Error:", error);
