@@ -1,7 +1,7 @@
 AUTO_SUGGEST_URL = "https://search-books-main-5xruavjoyo7mq2fem4jwni4ace.ap-south-1.es.amazonaws.com/books_main/_search"
 ADD_DATA_URL = "https://search-books-main-5xruavjoyo7mq2fem4jwni4ace.ap-south-1.es.amazonaws.com/books_main/_doc"
 HEADERS = {
-    'Authorization': 'Basic b3BlbnNlYXJjaC1ib29rczpCb29rc0AyMDIz',
+    'Authorization': 'Basic <AUTH>',
     'Content-Type': 'application/json'
 }
 INDEXING_URL = "https://search-books-main-5xruavjoyo7mq2fem4jwni4ace.ap-south-1.es.amazonaws.com/books_main/_doc"
